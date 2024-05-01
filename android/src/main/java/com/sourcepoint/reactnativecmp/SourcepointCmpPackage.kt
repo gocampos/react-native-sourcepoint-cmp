@@ -7,10 +7,10 @@ import com.facebook.react.module.model.ReactModuleInfoProvider
 import com.facebook.react.module.model.ReactModuleInfo
 import java.util.HashMap
 
-class ReactNativeCmpPackage : TurboReactPackage() {
+class SourcepointCmpPackage : TurboReactPackage() {
   override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? {
-    return if (name == ReactNativeCmpModule.NAME) {
-      ReactNativeCmpModule(reactContext)
+    return if (name == SourcepointCmpModule.NAME) {
+      SourcepointCmpModule(reactContext)
     } else {
       null
     }
@@ -20,14 +20,13 @@ class ReactNativeCmpPackage : TurboReactPackage() {
     return ReactModuleInfoProvider {
       val moduleInfos: MutableMap<String, ReactModuleInfo> = HashMap()
       val isTurboModule: Boolean = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
-      moduleInfos[ReactNativeCmpModule.NAME] = ReactModuleInfo(
-        ReactNativeCmpModule.NAME,
-        ReactNativeCmpModule.NAME,
-        false,  // canOverrideExistingModule
-        false,  // needsEagerInit
-        true,  // hasConstants
-        false,  // isCxxModule
-        isTurboModule // isTurboModule
+      moduleInfos[SourcepointCmpModule.NAME] = ReactModuleInfo(
+        SourcepointCmpModule.NAME,
+        SourcepointCmpModule.NAME,
+        false,
+        false,
+        false,
+        isTurboModule
       )
       moduleInfos
     }

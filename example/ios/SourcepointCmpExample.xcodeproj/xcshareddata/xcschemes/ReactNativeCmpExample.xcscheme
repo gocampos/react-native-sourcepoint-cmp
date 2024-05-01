@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "ReactNativeCmpExample.app"
-               BlueprintName = "ReactNativeCmpExample"
-               ReferencedContainer = "container:ReactNativeCmpExample.xcodeproj">
+               BuildableName = "SourcepointCmpExample.app"
+               BlueprintName = "SourcepointCmpExample"
+               ReferencedContainer = "container:SourcepointCmpExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "ReactNativeCmpExampleTests.xctest"
-               BlueprintName = "ReactNativeCmpExampleTests"
-               ReferencedContainer = "container:ReactNativeCmpExample.xcodeproj">
+               BuildableName = "SourcepointCmpExampleTests.xctest"
+               BlueprintName = "SourcepointCmpExampleTests"
+               ReferencedContainer = "container:SourcepointCmpExample.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "ReactNativeCmpExample.app"
-            BlueprintName = "ReactNativeCmpExample"
-            ReferencedContainer = "container:ReactNativeCmpExample.xcodeproj">
+            BuildableName = "SourcepointCmpExample.app"
+            BlueprintName = "SourcepointCmpExample"
+            ReferencedContainer = "container:SourcepointCmpExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "ReactNativeCmpExample.app"
-            BlueprintName = "ReactNativeCmpExample"
-            ReferencedContainer = "container:ReactNativeCmpExample.xcodeproj">
+            BuildableName = "SourcepointCmpExample.app"
+            BlueprintName = "SourcepointCmpExample"
+            ReferencedContainer = "container:SourcepointCmpExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
