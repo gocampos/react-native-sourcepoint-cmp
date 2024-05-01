@@ -12,6 +12,6 @@ abstract class SourcepointCmpSpec internal constructor(context: ReactApplication
   abstract fun clearLocalData()
   abstract fun getUserData(promise: Promise)
   abstract fun loadGDPRPrivacyManager(pmId: String)
-  abstract fun loadCCPAPrivacyManager(pmId: String)
+  abstract fun loadUSNatPrivacyManager(pmId: String)
   abstract fun supportedEvents(): Array<String>
 }

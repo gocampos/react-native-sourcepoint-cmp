@@ -8,7 +8,9 @@ export default ({ data }: UserDataViewProps) => (
   <View style={styles.container}>
     <Text style={styles.header}>Local User Data</Text>
     <TestableText testID="gdpr.uuid">{data?.gdpr?.consents?.uuid}</TestableText>
-    <TestableText testID="ccpa.uuid">{data?.ccpa?.consents?.uuid}</TestableText>
+    <TestableText testID="usnat.uuid">
+      {data?.usnat?.consents?.uuid}
+    </TestableText>
     <ScrollView>
       <ScrollView horizontal>
         <JSONTree

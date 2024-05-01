@@ -34,7 +34,7 @@ import React
             accountId: accountId,
             propertyId: propertyId,
             propertyName: try! SPPropertyName(propertyName),
-            campaigns: SPCampaigns(gdpr: SPCampaign(), ccpa: SPCampaign()),
+            campaigns: SPCampaigns(gdpr: SPCampaign(), usnat: SPCampaign()),
             delegate: self
         )
     }
@@ -51,8 +51,8 @@ import React
         consentManager?.loadGDPRPrivacyManager(withId: pmId)
     }
 
-    func loadCCPAPrivacyManager(_ pmId: String) {
-        consentManager?.loadCCPAPrivacyManager(withId: pmId)
+    func loadUSNatPrivacyManager(_ pmId: String) {
+        consentManager?.loadUSNatPrivacyManager(withId: pmId)
     }
 }
 

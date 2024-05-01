@@ -7,7 +7,7 @@ export interface Spec extends TurboModule {
   loadMessage(): void;
   clearLocalData(): void;
   loadGDPRPrivacyManager(pmId: string): void;
-  loadCCPAPrivacyManager(pmId: string): void;
+  loadUSNatPrivacyManager(pmId: string): void;
 
   onFinished(callback: () => void): void;
   onAction(callback: (action: string) => void): void;

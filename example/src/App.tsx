@@ -18,7 +18,7 @@ const config = {
   propertyId: 16893,
   propertyName: 'mobile.multicampaign.demo',
   gdprPMId: '488393',
-  ccpaPMId: '509688',
+  usnatPMId: '943886',
 };
 
 const consentManager = new SPConsentManager();
@@ -58,9 +58,9 @@ export default function App() {
     consentManager.loadGDPRPrivacyManager(config.gdprPMId);
   }, []);
 
-  const onCCPAPMPress = useCallback(() => {
+  const onUSNATPMPress = useCallback(() => {
     setSDKStatus(SDKStatus.Networking);
-    consentManager.loadCCPAPrivacyManager(config.ccpaPMId);
+    consentManager.loadUSNatPrivacyManager(config.usnatPMId);
   }, []);
 
   const onClearDataPress = useCallback(() => {
@@ -86,8 +86,8 @@ export default function App() {
           disabled={disable}
         />
         <Button
-          title="Load CCPA PM"
-          onPress={onCCPAPMPress}
+          title="Load USNAT PM"
+          onPress={onUSNATPMPress}
           disabled={disable}
         />
         <Button title="Clear All" onPress={onClearDataPress} />

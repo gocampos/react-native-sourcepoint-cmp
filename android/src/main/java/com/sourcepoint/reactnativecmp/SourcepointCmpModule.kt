@@ -1,6 +1,7 @@
 package com.sourcepoint.reactnativecmp
 
 import android.view.View
+import com.facebook.react.bridge.Arguments.createArray
 import com.facebook.react.bridge.Arguments.createMap
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactMethod
@@ -36,7 +37,7 @@ class SourcepointCmpModule internal constructor(context: ReactApplicationContext
       addPropertyId(propertyId)
       // TODO: parameterize campaigns
       addCampaign(CampaignType.GDPR)
-      addCampaign(CampaignType.CCPA)
+      addCampaign(CampaignType.USNAT)
     }.build()
 
     reactApplicationContext.currentActivity?.let {
@@ -65,9 +66,10 @@ class SourcepointCmpModule internal constructor(context: ReactApplicationContext
   override fun loadGDPRPrivacyManager(pmId: String) {
     runOnMainThread { spConsentLib?.loadPrivacyManager(pmId, CampaignType.GDPR) }
   }
+
   @ReactMethod
-  override fun loadCCPAPrivacyManager(pmId: String) {
-    runOnMainThread { spConsentLib?.loadPrivacyManager(pmId, CampaignType.CCPA) }
+  override fun loadUSNatPrivacyManager(pmId: String) {
+    runOnMainThread { spConsentLib?.loadPrivacyManager(pmId, CampaignType.USNAT) }
   }
   @ReactMethod
   override fun supportedEvents() = SDKEvent.entries.map { name }.toTypedArray()
@@ -115,14 +117,23 @@ class SourcepointCmpModule internal constructor(context: ReactApplicationContext
     sendEvent(SDKEvent.onSPUIReady)
   }
 
+  // TODO: standardise SPConsents interface on the JS side
   private fun userConsentsToWriteableMap(consents: SPConsents) = createMap().apply {
-    consents.ccpa?.let { ccpa ->
-      putMap("ccpa", createMap().apply {
+    consents.usNat?.let { usnat ->
+      putMap("usnat", createMap().apply {
         putMap("consents", createMap().apply {
-          putString("uuid", ccpa.consent.uuid)
-          putString("uspstring", ccpa.consent.uspstring)
+          putString("uuid", usnat.consent.uuid)
+          putArray("consentSections", createArray().apply {
+            usnat.consent.consentStrings?.map { cString ->
+              pushMap(createMap().apply {
+                cString.sectionId?.let { id -> putInt("id", id) }
+                putString("name", cString.sectionName)
+                putString("string", cString.consentString)
+              })
+            }
+          })
         })
-        putBoolean("applies", ccpa.consent.applies)
+        putBoolean("applies", usnat.consent.applies)
       })
     }
 

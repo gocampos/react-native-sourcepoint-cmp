@@ -48,8 +48,8 @@ export class SPConsentManager implements Spec {
     SourcepointCmp.loadGDPRPrivacyManager(pmId);
   }
 
-  loadCCPAPrivacyManager(pmId: string) {
-    SourcepointCmp.loadCCPAPrivacyManager(pmId);
+  loadUSNatPrivacyManager(pmId: string) {
+    SourcepointCmp.loadUSNatPrivacyManager(pmId);
   }
 
   onAction(callback: (action: string) => void): void {

@@ -14,7 +14,7 @@ RCT_EXTERN_METHOD(build:(int)accountId propertyId:(int)propertyId propertyName:(
 RCT_EXTERN_METHOD(loadMessage)
 RCT_EXTERN_METHOD(clearLocalData)
 RCT_EXTERN_METHOD(loadGDPRPrivacyManager:(NSString *)pmId)
-RCT_EXTERN_METHOD(loadCCPAPrivacyManager:(NSString *)pmId)
+RCT_EXTERN_METHOD(loadUSNatPrivacyManager:(NSString *)pmId)
 
 RCT_EXTERN_METHOD(getUserData: (RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 

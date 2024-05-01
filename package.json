@@ -37,7 +37,10 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "cmp",
+    "privacy",
+    "sourcepoint"
   ],
   "repository": {
     "type": "git",
@@ -160,7 +163,7 @@
     ]
   },
   "codegenConfig": {
-    "name": "RNSourcepointCmpSpec",
+    "name": "SourcepointCmpSpec",
     "type": "modules",
     "jsSrcsDir": "src"
   }
