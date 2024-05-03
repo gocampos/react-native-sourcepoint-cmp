@@ -2,7 +2,7 @@ package com.sourcepoint.reactnativecmp
 
 import com.facebook.react.bridge.ReactApplicationContext
 
-abstract class SourcepointCmpSpec internal constructor(context: ReactApplicationContext) :
+abstract class RNSourcepointCmpSpec internal constructor(context: ReactApplicationContext) :
   NativeSourcepointCmpSpec(context) {
   abstract fun build(accountId: Int, propertyId: Int, propertyName: String)
   abstract fun loadMessage()

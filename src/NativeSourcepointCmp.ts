@@ -1,8 +1,29 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 
+export type SPCampaign = {
+  targetingParams?: Object;
+  supportLegacyUSPString?: boolean;
+};
+
+export const enum SPCampaignEnvironment {
+  public = 'public',
+  stage = 'stage',
+}
+
+export type SPCampaigns = {
+  gdpr?: SPCampaign;
+  usnat?: SPCampaign;
+  environment?: SPCampaignEnvironment;
+};
+
 export interface Spec extends TurboModule {
-  build(accountId: number, propId: number, propName: string): void;
+  build(
+    accountId: number,
+    propertyId: number,
+    propertyName: string,
+    campaigns: SPCampaigns
+  ): void;
   getUserData(): Promise<Record<string, unknown>>;
   loadMessage(): void;
   clearLocalData(): void;
@@ -18,4 +39,4 @@ export interface Spec extends TurboModule {
   dispose(): void;
 }
 
-export default TurboModuleRegistry.getEnforcing<Spec>('SourcepointCmp');
+export default TurboModuleRegistry.getEnforcing<Spec>('RNSourcepointCmp');

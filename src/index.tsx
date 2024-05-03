@@ -1,5 +1,6 @@
 import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
-import type { Spec } from './NativeSourcepointCmp';
+import type { Spec, SPCampaigns, SPCampaign } from './NativeSourcepointCmp';
+import { SPCampaignEnvironment } from './NativeSourcepointCmp';
 
 const LINKING_ERROR =
   `The package '@sourcepoint/react-native-cmp' doesn't seem to be linked. Make sure: \n\n` +
@@ -10,12 +11,12 @@ const LINKING_ERROR =
 // @ts-expect-error
 const isTurboModuleEnabled = global.__turboModuleProxy != null;
 
-const SourcepointCmpModule = isTurboModuleEnabled
+const RNSourcepointCmpModule = isTurboModuleEnabled
   ? require('./NativeSourcepointCmp').default
-  : NativeModules.SourcepointCmp;
+  : NativeModules.RNSourcepointCmp;
 
-const SourcepointCmp = SourcepointCmpModule
-  ? SourcepointCmpModule
+const RNSourcepointCmp = RNSourcepointCmpModule
+  ? RNSourcepointCmpModule
   : new Proxy(
       {},
       {
@@ -25,31 +26,42 @@ const SourcepointCmp = SourcepointCmpModule
       }
     );
 
-export class SPConsentManager implements Spec {
-  emitter = new NativeEventEmitter(SourcepointCmp);
+// TODO: standardize consent classes across platforms
 
-  build(accountId: number, propId: number, propName: string) {
-    SourcepointCmp.build(accountId, propId, propName);
+export type { SPCampaign, SPCampaigns };
+
+export { SPCampaignEnvironment };
+
+export class SPConsentManager implements Spec {
+  emitter = new NativeEventEmitter(RNSourcepointCmp);
+
+  build(
+    accountId: number,
+    propertyId: number,
+    propertyName: string,
+    campaigns: SPCampaigns
+  ) {
+    RNSourcepointCmp.build(accountId, propertyId, propertyName, campaigns);
   }
 
   getUserData(): Promise<Record<string, unknown>> {
-    return SourcepointCmp.getUserData();
+    return RNSourcepointCmp.getUserData();
   }
 
   loadMessage() {
-    SourcepointCmp.loadMessage();
+    RNSourcepointCmp.loadMessage();
   }
 
   clearLocalData() {
-    SourcepointCmp.clearLocalData();
+    RNSourcepointCmp.clearLocalData();
   }
 
   loadGDPRPrivacyManager(pmId: string) {
-    SourcepointCmp.loadGDPRPrivacyManager(pmId);
+    RNSourcepointCmp.loadGDPRPrivacyManager(pmId);
   }
 
   loadUSNatPrivacyManager(pmId: string) {
-    SourcepointCmp.loadUSNatPrivacyManager(pmId);
+    RNSourcepointCmp.loadUSNatPrivacyManager(pmId);
   }
 
   onAction(callback: (action: string) => void): void {
@@ -78,6 +90,8 @@ export class SPConsentManager implements Spec {
   }
 
   dispose(): void {
-    SourcepointCmp.supportedEvents()?.forEach(this.emitter.removeAllListeners);
+    RNSourcepointCmp.supportedEvents()?.forEach(
+      this.emitter.removeAllListeners
+    );
   }
 }

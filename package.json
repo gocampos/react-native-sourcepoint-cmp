@@ -163,7 +163,7 @@
     ]
   },
   "codegenConfig": {
-    "name": "SourcepointCmpSpec",
+    "name": "RNSourcepointCmpSpec",
     "type": "modules",
     "jsSrcsDir": "src"
   }

@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, SafeAreaView, Button, StyleSheet } from 'react-native';
 
-import { SPConsentManager } from '@sourcepoint/react-native-cmp';
+import {
+  SPConsentManager,
+  SPCampaignEnvironment,
+} from '@sourcepoint/react-native-cmp';
+import type { SPCampaigns } from '@sourcepoint/react-native-cmp';
 
 import UserDataView from './UserDataView';
 
@@ -19,10 +23,19 @@ const config = {
   propertyName: 'mobile.multicampaign.demo',
   gdprPMId: '488393',
   usnatPMId: '943886',
+  campaigns: {
+    usnat: { supportLegacyUSPString: true },
+    environment: SPCampaignEnvironment.public,
+  } as SPCampaigns,
 };
 
 const consentManager = new SPConsentManager();
-consentManager.build(config.accountId, config.propertyId, config.propertyName);
+consentManager.build(
+  config.accountId,
+  config.propertyId,
+  config.propertyName,
+  config.campaigns
+);
 
 export default function App() {
   const [userData, setUserData] = useState<Record<string, unknown>>({});
@@ -65,7 +78,7 @@ export default function App() {
 
   const onClearDataPress = useCallback(() => {
     consentManager.clearLocalData();
-    consentManager.getUserData().then(setUserData);
+    setUserData({});
   }, []);
 
   const disable =

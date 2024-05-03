@@ -5,10 +5,10 @@
 //  Created by Andre Herculano on 22.12.23.
 //
 
-#ifndef SourcepointCmp_Bridging_Header_h
-#define SourcepointCmp_Bridging_Header_h
+#ifndef RNSourcepointCmp_Bridging_Header_h
+#define RNSourcepointCmp_Bridging_Header_h
 
 #import <React/RCTBridgeModule.h>
 
 
-#endif /* SourcepointCmp_Bridging_Header_h */
+#endif /* RNSourcepointCmp_Bridging_Header_h */

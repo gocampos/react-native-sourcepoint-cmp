@@ -6,12 +6,14 @@ import com.facebook.react.bridge.Arguments.createMap
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.Promise
+import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.sourcepoint.cmplibrary.NativeMessageController
 import com.sourcepoint.cmplibrary.SpClient
 import com.sourcepoint.cmplibrary.SpConsentLib
 import com.sourcepoint.cmplibrary.core.nativemessage.MessageStructure
+import com.sourcepoint.cmplibrary.creation.ConfigOption
 import com.sourcepoint.cmplibrary.creation.SpConfigDataBuilder
 import com.sourcepoint.cmplibrary.creation.makeConsentLib
 import com.sourcepoint.cmplibrary.exception.CampaignType
@@ -21,23 +23,35 @@ import com.sourcepoint.cmplibrary.util.clearAllData
 import com.sourcepoint.cmplibrary.util.userConsents
 import org.json.JSONObject
 
-class SourcepointCmpModule internal constructor(context: ReactApplicationContext) :
-  SourcepointCmpSpec(context) , SpClient {
+class RNSourcepointCmpModule internal constructor(context: ReactApplicationContext) :
+  RNSourcepointCmpSpec(context) , SpClient {
     enum class SDKEvent {
       onSPUIReady, onSPUIFinished, onAction, onSPFinished, onError
     }
 
   private var spConsentLib: SpConsentLib? = null
+
   override fun getName() = NAME
+
   @ReactMethod
-  override fun build(accountId: Int, propertyId: Int, propertyName: String) {
+  override fun build(accountId: Int, propertyId: Int, propertyName: String, campaigns: ReadableMap) {
+    val convertedCampaigns = campaigns.SPCampaigns()
+
     val config = SpConfigDataBuilder().apply {
       addAccountId(accountId)
       addPropertyName(propertyName)
       addPropertyId(propertyId)
-      // TODO: parameterize campaigns
-      addCampaign(CampaignType.GDPR)
-      addCampaign(CampaignType.USNAT)
+      convertedCampaigns.gdpr?.let {
+        addCampaign(campaignType = CampaignType.GDPR, params = it.targetingParams, groupPmId = null)
+      }
+      convertedCampaigns.usnat?.let {
+        addCampaign(
+          campaignType = CampaignType.USNAT,
+          params = it.targetingParams,
+          groupPmId = null,
+          configParams = if(it.supportLegacyUSPString) setOf(ConfigOption.SUPPORT_LEGACY_USPSTRING) else emptySet()
+        )
+      }
     }.build()
 
     reactApplicationContext.currentActivity?.let {
@@ -50,18 +64,22 @@ class SourcepointCmpModule internal constructor(context: ReactApplicationContext
   private fun runOnMainThread(runnable: () -> Unit) {
     reactApplicationContext.runOnUiQueueThread(runnable)
   }
+
   @ReactMethod
   override fun loadMessage() {
     runOnMainThread { spConsentLib?.loadMessage(View.generateViewId()) }
   }
+
   @ReactMethod
   override fun clearLocalData() {
     clearAllData(reactApplicationContext)
   }
+
   @ReactMethod
   override fun getUserData(promise: Promise) {
     promise.resolve(userConsentsToWriteableMap(userConsents(reactApplicationContext)))
   }
+
   @ReactMethod
   override fun loadGDPRPrivacyManager(pmId: String) {
     runOnMainThread { spConsentLib?.loadPrivacyManager(pmId, CampaignType.GDPR) }
@@ -71,6 +89,7 @@ class SourcepointCmpModule internal constructor(context: ReactApplicationContext
   override fun loadUSNatPrivacyManager(pmId: String) {
     runOnMainThread { spConsentLib?.loadPrivacyManager(pmId, CampaignType.USNAT) }
   }
+
   @ReactMethod
   override fun supportedEvents() = SDKEvent.entries.map { name }.toTypedArray()
   private fun sendEvent(event: SDKEvent, params: WritableMap? = null) = reactApplicationContext
@@ -78,7 +97,7 @@ class SourcepointCmpModule internal constructor(context: ReactApplicationContext
     .emit(event.name, params)
 
   companion object {
-    const val NAME = "SourcepointCmp"
+    const val NAME = "RNSourcepointCmp"
   }
 
   override fun onAction(view: View, consentAction: ConsentAction): ConsentAction {
@@ -132,6 +151,7 @@ class SourcepointCmpModule internal constructor(context: ReactApplicationContext
               })
             }
           })
+          putString("legacyUSPString", usnat.consent.gppData["IABUSPrivacy_String"].toString())
         })
         putBoolean("applies", usnat.consent.applies)
       })
