@@ -75,6 +75,7 @@ jobs:
         env:
           JAVA_OPTS: "-XX:MaxHeapSize=6g"
         run: yarn turbo run build:android --cache-dir="${{ env.TURBO_CACHE_DIR }}"
+      # - run: yarn e2e:android
   e2e-test-ios:
     runs-on: macos-14
     env:
