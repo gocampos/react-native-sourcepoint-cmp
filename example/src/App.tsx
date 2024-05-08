@@ -22,10 +22,11 @@ const config = {
   propertyId: 16893,
   propertyName: 'mobile.multicampaign.demo',
   gdprPMId: '488393',
-  usnatPMId: '943886',
+  usnatPMId: '988851',
   campaigns: {
+    gdpr: {},
     usnat: { supportLegacyUSPString: true },
-    environment: SPCampaignEnvironment.public,
+    environment: SPCampaignEnvironment.Public,
   } as SPCampaigns,
 };
 

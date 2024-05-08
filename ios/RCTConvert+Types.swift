@@ -12,8 +12,8 @@ import ConsentViewController
 extension RCTConvert {
     @objc static func SPCampaignEnv(_ envString: String?) -> ConsentViewController.SPCampaignEnv {
         switch envString {
-        case "public": .Public
-        case "stage": .Stage
+        case "Public": .Public
+        case "Stage": .Stage
         default: .Public
         }
     }

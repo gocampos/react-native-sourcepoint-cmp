@@ -18,7 +18,7 @@ export default ({ data }: UserDataViewProps) => (
           theme={theme}
           hideRoot
           shouldExpandNode={jsonExpandNodes}
-          sortObjectKeys
+          sortObjectKeys={false}
         />
       </ScrollView>
     </ScrollView>

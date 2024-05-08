@@ -7,8 +7,8 @@ export type SPCampaign = {
 };
 
 export const enum SPCampaignEnvironment {
-  public = 'public',
-  stage = 'stage',
+  Public = 'Public',
+  Stage = 'Stage',
 }
 
 export type SPCampaigns = {

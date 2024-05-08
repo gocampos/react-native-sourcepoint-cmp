@@ -7,8 +7,6 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 
-#import "sourcepoint_react_native_cmp-Swift.h"
-
 @interface RCT_EXTERN_MODULE(RNSourcepointCmp, RCTEventEmitter)
 
 RCT_EXTERN_METHOD(build:(int)accountId propertyId:(int)propertyId propertyName:(NSString *)propertyName campaigns:(SPCampaigns*)campaigns)

@@ -6,8 +6,8 @@ import com.sourcepoint.cmplibrary.model.exposed.TargetingParam
 
 fun campaignsEnvFrom(rawValue: String?): CampaignsEnv? =
   when (rawValue) {
-    "public" -> CampaignsEnv.PUBLIC
-    "stage" -> CampaignsEnv.STAGE
+    "Public" -> CampaignsEnv.PUBLIC
+    "Stage" -> CampaignsEnv.STAGE
     else -> { null }
 }
 
