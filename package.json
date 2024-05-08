@@ -28,6 +28,8 @@
   "scripts": {
     "example": "yarn workspace @sourcepoint/react-native-cmp-example",
     "test": "jest",
+    "e2e:android": "yarn detox build --configuration android.emu.debug && yarn detox test --configuration android.emu.debug --start=force --cleanup --take-screenshots=failing --record-logs=failing --loglevel=trace --artifacts-location=./e2e/artifacts",
+    "e2e:ios": "yarn detox build --configuration ios.sim.debug && yarn detox test --configuration ios.sim.debug --start=force --cleanup --headless --take-screenshots=failing --record-logs=failing --loglevel=trace --artifacts-location=./e2e/artifacts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
@@ -64,6 +66,8 @@
     "@types/react": "^18.2.44",
     "commitlint": "^17.0.2",
     "del-cli": "^5.1.0",
+    "detox": "^20.20.3",
+    "detox-cli": "^20.0.0",
     "eslint": "^8.51.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
