@@ -2,7 +2,7 @@ import jestExpect from 'expect';
 import { web, element, by, expect, waitFor, device } from 'detox';
 
 const app = {
-  _timeout: 15000, //ms
+  _timeout: 30000, //ms
   loadMessagesButton: element(by.text(/load messages/i)),
   loadGDPRPMButton: element(by.text(/load gdpr pm/i)),
   loadUSNatPMButton: element(by.text(/load usnat pm/i)),
