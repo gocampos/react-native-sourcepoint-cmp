@@ -42,6 +42,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup
         uses: ./.github/actions/setup
+      - name: Install JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
       - name: Cache turborepo for Android
         uses: actions/cache@v4
         with:
@@ -55,12 +60,6 @@ jobs:
           if [[ $TURBO_CACHE_STATUS == "HIT" ]]; then
             echo "turbo_cache_hit=1" >> $GITHUB_ENV
           fi
-      - name: Install JDK
-        if: env.turbo_cache_hit != 1
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: '17'
       - name: Finalize Android SDK
         if: env.turbo_cache_hit != 1
         run: |
@@ -88,7 +87,7 @@ jobs:
           disk-size: 6000M
           heap-size: 1024M
           emulator-options: -no-snapshot-save -no-window -noaudio -no-boot-anim -camera-back none
-          script: yarn e2e:android
+          script: yarn turbo e2e:android --cache-dir="${{ env.TURBO_CACHE_DIR }}"
       - name: Upload test reports
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
@@ -136,7 +135,7 @@ jobs:
           NO_FLIPPER: 1
       - name: Build example for iOS
         run: yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
-      - run: yarn e2e:ios
+      - run: yarn turbo e2e:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
       - name: Upload test reports
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
