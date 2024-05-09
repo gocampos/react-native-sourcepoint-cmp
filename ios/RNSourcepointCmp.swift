@@ -29,13 +29,15 @@ import React
     }
 
     func build(_ accountId: Int, propertyId: Int, propertyName: String, campaigns: SPCampaigns) {
-        RNSourcepointCmp.shared?.consentManager = SPConsentManager(
+        let manager = SPConsentManager(
             accountId: accountId,
             propertyId: propertyId,
             propertyName: try! SPPropertyName(propertyName),
             campaigns: campaigns,
             delegate: self
         )
+        manager.messageTimeoutInSeconds = 30
+        RNSourcepointCmp.shared?.consentManager = manager
     }
 
     func loadMessage() {
