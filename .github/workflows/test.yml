@@ -78,7 +78,23 @@ jobs:
         env:
           JAVA_OPTS: "-XX:MaxHeapSize=6g"
         run: yarn turbo run build:android --cache-dir="${{ env.TURBO_CACHE_DIR }}"
-      # - run: yarn e2e:android
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          arch: x86_64
+          profile: pixel_5
+          disable-animations: true
+          disk-size: 6000M
+          heap-size: 1024M
+          emulator-options: -no-snapshot-save -no-window -noaudio -no-boot-anim -camera-back none
+          script: yarn e2e:android
+      - name: Upload test reports
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-test-report
+          path: '**/e2e/artifacts/android*'
   e2e-test-ios:
     runs-on: macos-14
     env:
