@@ -93,12 +93,13 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd
+          key: avd-33
       - name: create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
           avd-name: Pixel_5_API_33
+          force-avd-creation: false
           api-level: 33
           arch: x86_64
           disk-size: 6000M
