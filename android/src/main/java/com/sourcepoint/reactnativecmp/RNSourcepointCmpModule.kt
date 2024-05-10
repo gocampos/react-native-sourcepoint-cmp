@@ -41,6 +41,7 @@ class RNSourcepointCmpModule internal constructor(context: ReactApplicationConte
       addAccountId(accountId)
       addPropertyName(propertyName)
       addPropertyId(propertyId)
+      addMessageTimeout(30000)
       convertedCampaigns.gdpr?.let {
         addCampaign(campaignType = CampaignType.GDPR, params = it.targetingParams, groupPmId = null)
       }
