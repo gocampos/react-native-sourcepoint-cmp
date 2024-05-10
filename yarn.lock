@@ -3193,7 +3193,6 @@ __metadata:
     react-native: 0.74.1
     react-native-builder-bob: ^0.23.2
     release-it: ^15.0.0
-    set-interval-async: ^3.0.3
     turbo: ^1.13.3
     typescript: ^5.2.2
   peerDependencies:
@@ -12472,13 +12471,6 @@ __metadata:
     functions-have-names: ^1.2.3
     has-property-descriptors: ^1.0.2
   checksum: d6229a71527fd0404399fc6227e0ff0652800362510822a291925c9d7b48a1ca1a468b11b281471c34cd5a2da0db4f5d7ff315a61d26655e77f6e971e6d0c80f
-  languageName: node
-  linkType: hard
-
-"set-interval-async@npm:^3.0.3":
-  version: 3.0.3
-  resolution: "set-interval-async@npm:3.0.3"
-  checksum: ce0f86fbb29feb5ce3bdb4a445584c5c8ad66c9532fb7ed20472998d7cce94dbf50c81bf58c1b5e6c20d646adc5f5d276f1525e22eecaef0ed6bd58a0c0abcf0
   languageName: node
   linkType: hard
 
