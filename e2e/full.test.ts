@@ -35,6 +35,12 @@ const app = {
       .text;
   },
 
+  forSDKToBePresenting: async function () {
+    await waitFor(this.sdkElement)
+      .toHaveText(this.presentingStatusText)
+      .withTimeout(this._timeout);
+  },
+
   forSDKToBeFinished: async function () {
     await waitFor(this.sdkElement)
       .toHaveText(this.finishedStatusText)
@@ -56,12 +62,14 @@ const app = {
   },
 
   acceptAll: async function () {
+    await app.forSDKToBePresenting();
     await sleep(2000);
     await app.acceptAllButton.tap();
     return this;
   },
 
   rejectAll: async function () {
+    await app.forSDKToBePresenting();
     await sleep(2000);
     await app.rejectAllButton.tap();
     return this;
@@ -88,16 +96,18 @@ beforeEach(async () => {
 
 describe('SourcepointSDK', () => {
   it('Accepting All, works', async () => {
-    await app.acceptAll();
-    await app.acceptAll();
+    await app.acceptAll(); // GDPR
+    await app.acceptAll(); // USNAT
+    await app.forSDKToBeFinished();
     await assertUUIDsDontChangeAfterReloadingMessages();
     await expect(app.gdprConsentStatusLabel).toHaveText('consentedAll');
     await expect(app.usnatConsentStatusLabel).toHaveText('consentedAll');
   });
 
   it('Rejecting All, works', async () => {
-    await app.rejectAll();
-    await app.rejectAll();
+    await app.rejectAll(); // GDPR
+    await app.rejectAll(); // USNAT
+    await app.forSDKToBeFinished();
     await assertUUIDsDontChangeAfterReloadingMessages();
     await expect(app.gdprConsentStatusLabel).toHaveText('rejectedAll');
     await expect(app.usnatConsentStatusLabel).toHaveText('rejectedAll');
