@@ -4,7 +4,7 @@
     "build:android": {
       "inputs": [
         "package.json",
-        "android",
+        "android/*.kt",
         "!android/build",
         "src/*.ts",
         "src/*.tsx",
@@ -20,7 +20,7 @@
       "inputs": [
         "package.json",
         "*.podspec",
-        "ios",
+        "ios/*.swift",
         "src/*.ts",
         "src/*.tsx",
         "example/package.json",
@@ -34,7 +34,7 @@
       "outputMode": "new-only",
       "inputs": [
         "package.json",
-        "android",
+        "android/src",
         "!android/build",
         "src/*.ts",
         "src/*.tsx",
@@ -56,7 +56,7 @@
       "inputs": [
         "package.json",
         "*.podspec",
-        "ios",
+        "ios/*.swift",
         "src/*.ts",
         "src/*.tsx",
         "example/package.json",

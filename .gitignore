@@ -82,3 +82,5 @@ e2e/artifacts/**
 
 
 **/.xcode.env.*
+example/ios/.xcode.env
+*.log
