@@ -11,6 +11,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
   lint:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,6 +20,7 @@ jobs:
       - run: yarn lint
       - run: yarn typecheck
   unit-tests:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,6 +29,7 @@ jobs:
       - name: Run unit tests
         run: yarn test --maxWorkers=2 --coverage
   build-library:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -35,6 +38,7 @@ jobs:
       - name: Build package
         run: yarn prepare
   e2e-test-android:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     env:
       TURBO_CACHE_DIR: .turbo/android
@@ -125,6 +129,7 @@ jobs:
           name: android-test-report
           path: '**/e2e/artifacts/android*'
   e2e-test-ios:
+    timeout-minutes: 30
     runs-on: macos-14
     env:
       TURBO_CACHE_DIR: .turbo/ios
@@ -133,7 +138,12 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
       - name: Install applesimutils
-        run: brew tap wix/brew && brew install applesimutils
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: 1
+          HOMEBREW_NO_INSTALL_CLEANUP: 1
+        run: | 
+          brew tap wix/brew
+          brew install applesimutils
       - name: Cache turborepo for iOS
         uses: actions/cache@v4
         with:
