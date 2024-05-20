@@ -79,3 +79,8 @@ lib/
 
 # end-to-end artificats created by Detox
 e2e/artifacts/**
+
+
+**/.xcode.env.*
+example/ios/.xcode.env
+*.log

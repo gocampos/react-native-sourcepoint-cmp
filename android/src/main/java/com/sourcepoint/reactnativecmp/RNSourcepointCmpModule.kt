@@ -41,6 +41,7 @@ class RNSourcepointCmpModule internal constructor(context: ReactApplicationConte
       addAccountId(accountId)
       addPropertyName(propertyName)
       addPropertyId(propertyId)
+      addMessageTimeout(30000)
       convertedCampaigns.gdpr?.let {
         addCampaign(campaignType = CampaignType.GDPR, params = it.targetingParams, groupPmId = null)
       }
@@ -151,6 +152,9 @@ class RNSourcepointCmpModule internal constructor(context: ReactApplicationConte
               })
             }
           })
+          putMap("consentStatus", createMap().apply {
+            usnat.consent.statuses.consentedToAll?.let { putBoolean("consentedAll", it) }
+          })
           putString("legacyUSPString", usnat.consent.gppData["IABUSPrivacy_String"].toString())
         })
         putBoolean("applies", usnat.consent.applies)
@@ -162,6 +166,9 @@ class RNSourcepointCmpModule internal constructor(context: ReactApplicationConte
         putMap("consents", createMap().apply {
           putString("uuid", gdpr.consent.uuid)
           putString("euconsent", gdpr.consent.euconsent)
+          putMap("consentStatus", createMap().apply {
+            gdpr.consent.consentStatus?.consentedAll?.let { putBoolean("consentedAll", it) }
+          })
         })
         putBoolean("applies", gdpr.consent.applies)
       })

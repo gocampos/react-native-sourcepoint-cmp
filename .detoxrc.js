@@ -23,16 +23,17 @@ module.exports = {
       build: 'cd example/android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug',
       reversePorts: [8081]
     },
-    // 'ios.release': {
-    //   type: 'ios.app',
-    //   binaryPath: 'example/ios/build/Build/Products/Release-iphonesimulator/SourcepointCmpExample.app',
-    //   build: 'xcodebuild -workspace example/ios/SourcepointCmpExample.xcworkspace -scheme SourcepointCmpExample -configuration Release -sdk iphonesimulator -derivedDataPath example/ios/build'
-    // },
-    // 'android.release': {
-    //   type: 'android.apk',
-    //   binaryPath: 'example/android/app/build/outputs/apk/release/app-release.apk',
-    //   build: 'cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release'
-    // }
+    'ios.release': {
+      type: 'ios.app',
+      binaryPath: 'example/ios/build/Build/Products/Release-iphonesimulator/SourcepointCmpExample.app',
+      build: 'xcodebuild -workspace example/ios/SourcepointCmpExample.xcworkspace -scheme SourcepointCmpExample -configuration Release -sdk iphonesimulator -derivedDataPath example/ios/build'
+    },
+    'android.release': {
+      type: 'android.apk',
+      binaryPath: 'example/android/app/build/outputs/apk/release/app-release.apk',
+      build: 'cd example/android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release',
+      reversePorts: [8081]
+    }
   },
   devices: {
     simulator: {
@@ -63,10 +64,14 @@ module.exports = {
       device: 'emulator',
       app: 'android.debug'
     },
-    // 'ios.sim.release': {
-    //   device: 'simulator',
-    //   app: 'ios.release'
-    // },
+    'ios.sim.release': {
+      device: 'simulator',
+      app: 'ios.release'
+    },
+    'android.emu.release': {
+      device: 'emulator',
+      app: 'android.release'
+    }
     // 'android.att.debug': {
     //   device: 'attached',
     //   app: 'android.debug'
@@ -75,9 +80,5 @@ module.exports = {
     //   device: 'attached',
     //   app: 'android.release'
     // },
-    // 'android.emu.release': {
-    //   device: 'emulator',
-    //   app: 'android.release'
-    // }
   }
 };

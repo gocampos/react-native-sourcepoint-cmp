@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, SafeAreaView, Button, StyleSheet } from 'react-native';
+import { LaunchArguments } from 'react-native-launch-arguments';
 
 import {
   SPConsentManager,
   SPCampaignEnvironment,
 } from '@sourcepoint/react-native-cmp';
 import type { SPCampaigns } from '@sourcepoint/react-native-cmp';
+import type { LaunchArgs } from './LaunchArgs';
 
 import UserDataView from './UserDataView';
 
@@ -16,6 +18,8 @@ enum SDKStatus {
   Finished = 'Finished',
   Errored = 'Errored',
 }
+
+const launchArgs = LaunchArguments.value<LaunchArgs>();
 
 const config = {
   accountId: 22,
@@ -28,57 +32,75 @@ const config = {
     usnat: { supportLegacyUSPString: true },
     environment: SPCampaignEnvironment.Public,
   } as SPCampaigns,
+  ...launchArgs?.config,
 };
-
-const consentManager = new SPConsentManager();
-consentManager.build(
-  config.accountId,
-  config.propertyId,
-  config.propertyName,
-  config.campaigns
-);
 
 export default function App() {
   const [userData, setUserData] = useState<Record<string, unknown>>({});
   const [sdkStatus, setSDKStatus] = useState<SDKStatus>(SDKStatus.NotStarted);
+  const consentManager = useRef<SPConsentManager | null>();
 
   useEffect(() => {
-    consentManager.onSPUIReady(() => setSDKStatus(SDKStatus.Presenting));
-    consentManager.onSPUIFinished(() => setSDKStatus(SDKStatus.Networking));
-    consentManager.onFinished(() => {
+    consentManager.current = new SPConsentManager();
+    consentManager.current?.build(
+      config.accountId,
+      config.propertyId,
+      config.propertyName,
+      config.campaigns
+    );
+
+    if (launchArgs.clearData === true) {
+      consentManager.current?.clearLocalData();
+    }
+
+    consentManager.current?.onSPUIReady(() =>
+      setSDKStatus(SDKStatus.Presenting)
+    );
+
+    consentManager.current?.onSPUIFinished(() =>
+      setSDKStatus(SDKStatus.Networking)
+    );
+
+    consentManager.current?.onFinished(() => {
       setSDKStatus(SDKStatus.Finished);
-      consentManager.getUserData().then(setUserData);
+      consentManager.current?.getUserData().then(setUserData);
     });
-    consentManager.onAction((actionType) => console.log(actionType));
-    consentManager.onError((description) => {
+
+    consentManager.current?.onAction((actionType) => console.log(actionType));
+
+    consentManager.current?.onError((description) => {
       setSDKStatus(SDKStatus.Errored);
       console.error(description);
     });
-    consentManager.getUserData().then(setUserData);
-    consentManager.loadMessage();
+
+    consentManager.current?.getUserData().then(setUserData);
+
+    consentManager.current?.loadMessage();
+
     setSDKStatus(SDKStatus.Networking);
+
     return () => {
-      consentManager.dispose();
+      consentManager.current?.dispose();
     };
   }, []);
 
   const onLoadMessagePress = useCallback(() => {
-    consentManager.loadMessage();
+    consentManager.current?.loadMessage();
     setSDKStatus(SDKStatus.Networking);
   }, []);
 
   const onGDPRPMPress = useCallback(() => {
     setSDKStatus(SDKStatus.Networking);
-    consentManager.loadGDPRPrivacyManager(config.gdprPMId);
+    consentManager.current?.loadGDPRPrivacyManager(config.gdprPMId);
   }, []);
 
   const onUSNATPMPress = useCallback(() => {
     setSDKStatus(SDKStatus.Networking);
-    consentManager.loadUSNatPrivacyManager(config.usnatPMId);
+    consentManager.current?.loadUSNatPrivacyManager(config.usnatPMId);
   }, []);
 
   const onClearDataPress = useCallback(() => {
-    consentManager.clearLocalData();
+    consentManager.current?.clearLocalData();
     setUserData({});
   }, []);
 
