@@ -61,7 +61,7 @@ export type GDPRConsent = {
 
 export type Consentable = {
   consented: Boolean;
-  GGGGGGid: String;
+  id: String;
 };
 
 export type ConsentSection = {

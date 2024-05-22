@@ -25,7 +25,7 @@ import React
     }
 
     func getUserData(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
-        resolve(consentManager?.userData.toDictionary() ?? [:])
+        resolve(RNSPUserData(from: consentManager?.userData).toDictionary())
     }
 
     func build(_ accountId: Int, propertyId: Int, propertyName: String, campaigns: SPCampaigns) {
@@ -66,8 +66,12 @@ extension RNSourcepointCmp: SPDelegate {
         UIApplication.shared.delegate?.window??.rootViewController
     }
 
+    // TODO: standardize action names
     func onAction(_ action: SPAction, from controller: UIViewController) {
-        RNSourcepointCmp.shared?.sendEvent(withName: "onAction", body: ["actionType": action.type.description])
+        RNSourcepointCmp.shared?.sendEvent(
+            withName: "onAction",
+            body: ["actionType": action.type.description]
+        )
     }
 
     func onSPUIReady(_ controller: UIViewController) {
