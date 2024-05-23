@@ -22,13 +22,18 @@ struct RNSPUSNatConsent: RNSPConsent {
         let consented: Bool
     }
 
+    struct ConsentSection: Encodable {
+        let id: Int
+        let name, consentString: String
+    }
+
     // the uuid given to a consent profile (user) it can be nil if the profile is not yet created
     let uuid: String?
 
     let expirationDate, createdDate: SPDate?
 
     // a list of consent sections (id, name and consent string) applicable to that user
-    let consentSections: [SPUSNatConsent.ConsentString]
+    let consentSections: [ConsentSection]
 
     let statuses: Statuses?
 
@@ -59,6 +64,14 @@ extension RNSPUSNatConsent.Consentable {
     }
 }
 
+extension RNSPUSNatConsent.ConsentSection {
+    init(from section: SPUSNatConsent.ConsentString) {
+        id = section.sectionId
+        name = section.sectionName
+        consentString = section.consentString
+    }
+}
+
 extension RNSPUSNatConsent {
     init?(from usnat: SPUSNatConsent?) {
         guard let usnat = usnat else { return nil }
@@ -67,7 +80,7 @@ extension RNSPUSNatConsent {
             uuid: usnat.uuid,
             expirationDate: nil,
             createdDate: nil,
-            consentSections: usnat.consentStrings,
+            consentSections: usnat.consentStrings.map { ConsentSection(from: $0) },
             statuses: Statuses(from: usnat.statuses),
             gppData: usnat.GPPData,
             vendors: usnat.vendors.map { Consentable(from: $0) },

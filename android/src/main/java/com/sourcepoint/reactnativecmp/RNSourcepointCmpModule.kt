@@ -21,6 +21,7 @@ import com.sourcepoint.cmplibrary.model.ConsentAction
 import com.sourcepoint.cmplibrary.model.exposed.SPConsents
 import com.sourcepoint.cmplibrary.util.clearAllData
 import com.sourcepoint.cmplibrary.util.userConsents
+import com.sourcepoint.reactnativecmp.consents.RNSPUserData
 import org.json.JSONObject
 
 class RNSourcepointCmpModule internal constructor(context: ReactApplicationContext) :
@@ -137,41 +138,5 @@ class RNSourcepointCmpModule internal constructor(context: ReactApplicationConte
     sendEvent(SDKEvent.onSPUIReady)
   }
 
-  // TODO: standardise SPConsents interface on the JS side
-  private fun userConsentsToWriteableMap(consents: SPConsents) = createMap().apply {
-    consents.usNat?.let { usnat ->
-      putMap("usnat", createMap().apply {
-        putMap("consents", createMap().apply {
-          putString("uuid", usnat.consent.uuid)
-          putArray("consentSections", createArray().apply {
-            usnat.consent.consentStrings?.map { cString ->
-              pushMap(createMap().apply {
-                cString.sectionId?.let { id -> putInt("id", id) }
-                putString("name", cString.sectionName)
-                putString("string", cString.consentString)
-              })
-            }
-          })
-          putMap("consentStatus", createMap().apply {
-            usnat.consent.statuses.consentedToAll?.let { putBoolean("consentedAll", it) }
-          })
-          putString("legacyUSPString", usnat.consent.gppData["IABUSPrivacy_String"].toString())
-        })
-        putBoolean("applies", usnat.consent.applies)
-      })
-    }
-
-    consents.gdpr?.let { gdpr ->
-      putMap("gdpr", createMap().apply {
-        putMap("consents", createMap().apply {
-          putString("uuid", gdpr.consent.uuid)
-          putString("euconsent", gdpr.consent.euconsent)
-          putMap("consentStatus", createMap().apply {
-            gdpr.consent.consentStatus?.consentedAll?.let { putBoolean("consentedAll", it) }
-          })
-        })
-        putBoolean("applies", gdpr.consent.applies)
-      })
-    }
-  }
+  private fun userConsentsToWriteableMap(consents: SPConsents) = RNSPUserData(consents).toRN()
 }

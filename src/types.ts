@@ -65,7 +65,7 @@ export type Consentable = {
 };
 
 export type ConsentSection = {
-  id: String;
+  id: Number;
   name: String;
   consentString: String;
 };
