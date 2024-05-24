@@ -99,7 +99,7 @@ export interface Spec extends TurboModule {
   loadGDPRPrivacyManager(pmId: string): void;
   loadUSNatPrivacyManager(pmId: string): void;
 
-  onFinished(callback: (userData: SPUserData) => void): void;
+  onFinished(callback: () => void): void;
 
   // TODO: change action from string to enum
   onAction(callback: (action: string) => void): void;
