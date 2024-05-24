@@ -1,6 +1,5 @@
 import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
-import type { Spec, SPCampaigns, SPCampaign } from './NativeSourcepointCmp';
-import { SPCampaignEnvironment } from './NativeSourcepointCmp';
+import type { Spec, SPCampaigns, SPUserData } from './types';
 
 const LINKING_ERROR =
   `The package '@sourcepoint/react-native-cmp' doesn't seem to be linked. Make sure: \n\n` +
@@ -26,11 +25,9 @@ const RNSourcepointCmp = RNSourcepointCmpModule
       }
     );
 
-// TODO: standardize consent classes across platforms
+export * from './types';
 
-export type { SPCampaign, SPCampaigns };
-
-export { SPCampaignEnvironment };
+export type * from './types';
 
 export class SPConsentManager implements Spec {
   emitter = new NativeEventEmitter(RNSourcepointCmp);
@@ -44,7 +41,7 @@ export class SPConsentManager implements Spec {
     RNSourcepointCmp.build(accountId, propertyId, propertyName, campaigns);
   }
 
-  getUserData(): Promise<Record<string, unknown>> {
+  getUserData(): Promise<SPUserData> {
     return RNSourcepointCmp.getUserData();
   }
 
@@ -79,7 +76,7 @@ export class SPConsentManager implements Spec {
     this.emitter.addListener('onSPUIFinished', callback);
   }
 
-  onFinished(callback: () => void) {
+  onFinished(callback: (userData: SPUserData) => void) {
     this.emitter.removeAllListeners('onSPFinished');
     this.emitter.addListener('onSPFinished', callback);
   }

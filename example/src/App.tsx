@@ -6,7 +6,7 @@ import {
   SPConsentManager,
   SPCampaignEnvironment,
 } from '@sourcepoint/react-native-cmp';
-import type { SPCampaigns } from '@sourcepoint/react-native-cmp';
+import type { SPCampaigns, SPUserData } from '@sourcepoint/react-native-cmp';
 import type { LaunchArgs } from './LaunchArgs';
 
 import UserDataView from './UserDataView';
@@ -36,7 +36,7 @@ const config = {
 };
 
 export default function App() {
-  const [userData, setUserData] = useState<Record<string, unknown>>({});
+  const [userData, setUserData] = useState<SPUserData>({});
   const [sdkStatus, setSDKStatus] = useState<SDKStatus>(SDKStatus.NotStarted);
   const consentManager = useRef<SPConsentManager | null>();
 
