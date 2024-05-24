@@ -1,27 +1,38 @@
-# @sourcepoint/react-native-cmp
+Sourcepoint's React Native package allows you to surface a Sourcepoint CMP message on applications built using the Reactive Native framework.
 
-The official React Native package for Sourcepoint
+# Table of Contents
 
-## Installation
+- [Install Sourcepoint package](#install-sourcepoint-package)
+- [Configuration overview](#configuration-overview)
+- [React example](#react-example)
+- [Complete app examples](#complete-app-examples)
+
+## Install Sourcepoint package
+
+Use the node package manager install command to install the Sourcepoint React Native package:
 
 ```sh
 npm install @sourcepoint/react-native-cmp
 ```
 
-## Usage
+## Configuration overview
 
-### Overview
-In a nutshell, in order to use the `SPConsentManager`  you'll need:
-1. Instantiate and call build with your configuration
-2. Set up the callbacks in the instance of `SPConsentManager`
-3. Call `loadMessages`. This will initiate the message, contact SP's servers, and it may or may not display a message, depending on your campaign scenario (configured in Sourcepoin't Dashboard).
-4. Retrieve user data with `getUserData`.
+In order to use the `SPConsentManager`  you will need to perform the following:
 
-Let's review each of the steps above in more detail.
+1. [Instantiate and call build with your configuration](#instantiate-and-call-build-with-your-configuration)
+2. [Set up callbacks in instance of `SPConsentManager`](#set-up-callbacks-in-instance-of-spconsentmanager)
+3. [Call `loadMessages`](#call-loadmessages) 
+4. [Retrieve user data with `getUserData`](#retrieve-user-data-with-getuserdata)
+
+In the sections below, we will review each of the steps in more detail:
 
 ### Instantiate and call build with your configuration
-In your app, you can setup the SPConsent manager in a external file or on your App. In this example we use `useRef`
-to keep a reference of the `SPConsentManager`. It's important to notice we wrap the initialisation of `SPConsentManager` in a `useEffect` and call `consentManager.current?.dispose()` to avoid memory leaks.
+
+In your app, you can setup the SPConsent manager in a external file or on your app. In the example below we use `useRef`
+to keep a reference of the `SPConsentManager`. 
+
+>It is important to notice that we wrap the initialisation of `SPConsentManager` in a `useEffect` and call `consentManager.current?.dispose()` to avoid memory leaks.
+
 ```ts
 const consentManager = useRef<SPConsentManager | null>();
 
@@ -39,28 +50,61 @@ useEffect(() => {
   };
 }
 ```
+The following attributes should be replaced with your organization's details:
 
-### Set up the callbacks in the instance of `SPConsentManager`
-`SPConsentManager` communicates with your app through a series of callbacks.
+| **Attribute**         | **Data Type** | **Description**                                                                                                                                                                                |
+|-----------------------|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `config.accountId`    | Number        | Value associates the property with your organization's Sourcepoint account. Retrieved by contacting your Sourcepoint Account Manager or via the **My Account** page in the Sourcepoint portal. |
+| `config.propertyId`   | Number        | ID for property found in the Sourcepoint portal                                                                                                                                                |
+| `config.propertyName` | String        | Name of property found in the Sourcepoint portal                                                                                                                                               |
+| `config.campaigns`    | Object        | Campaigns launched on the property through the Sourcepoint portal. Accepts `gdpr: {}` and/or `usnat: {}`. See table below for information on each campaign type.                               |
 
-* `onSPUIReady(callback: () => {})`
-This is called if the server determined a message should be displayed. The native SDKs will take care of the showing the message.
-* `onAction(callback: (action: string) => {});`
-Called when the user takes a action (e.g. accept all) within the consent message. `action: string` is going to be replaced with an enum.
-* `onSPUIFinished(callback: () => {})`
-Called when the native SDKs is done removing the consent UI from the foreground.
-* `onFinished(callback: () => {})`
-Called when all UI and network processes are finished. User consent is stored on the local storage of each platform (`UserDefaults` for iOS and `SharedPrefs` for Android). And it's safe to retrieve consent data with `getUserData`
-* `onError(callback: (description: string) => {})`
-Called if something go wrong.
+Refer to the table below regarding the different campaigns that can be implemented:
+
+>**NOTE**: Only include the campaign objects for which there is a campaign enabled on the property within the Sourcepoint portal.
+
+| **Campaign object** | **Description**                                                 |
+|---------------------|-----------------------------------------------------------------|
+| `gdpr: {}`          | Used if your property runs a GDPR TCF or GDPR Standard campaign |
+| `usnat: {}`         | Used if your property runs a U.S. Multi-State Privacy campaign  |
+
+### Set up callbacks in instance of `SPConsentManager`
+
+`SPConsentManager` communicates with your app through a series of callbacks. Review the table below for available callbacks:
+
+| **Callback**                                     | **Description**                                                                                                                                                                                                                        |
+|--------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `onSPUIReady(callback: () => {})`                | Called if the server determines a message should be displayed. The native SDKs will take care of showing the message.                                                                                                                  |
+| `onAction(callback: (action: string) => {})`     | Called when the user takes an action (e.g. Accept All) within the consent message. `action: string` is going to be replaced with an enum.                                                                                              |
+| `onSPUIFinished(callback: () => {})`             | Called when the native SDKs is done removing the consent UI from the foreground.                                                                                                                                                       |
+| `onFinished(callback: () => {})`                 | Called when all UI and network processes are finished. User consent is stored on the local storage of each platform (`UserDefaults` for iOS and `SharedPrefs` for Android). And it is safe to retrieve consent data with `getUserData` |
+| `onError(callback: (description: string) => {})` | Called if something goes wrong.                                                                                                                                                                                                        |
 
 ### Call `loadMessages`
-After instantiating and setting up `SPConsentManager`, configuring its callbacks, it's time to call `loadMessages`. This can be done at any stage of your app's lifecycle. Ideally you will want to call it as early as possible, in order to have consent for your vendors.
+
+After instantiating and setting up `SPConsentManager` and configuring its callbacks, it is time to call `loadMessages`. 
+
+Calling `loadMessages` will initiate the message, contact Sourcepoint's servers, and it may or may not display a message, depending on the scenario configured in the Sourcepoint portal for the property's message campaign.
+
+>This can be done at any stage of your app's lifecycle. Ideally you will want to call it as early as possible, in order to have consent for your vendors.
+
+```ts
+consentManager.current?.loadMessage();
+```
 
 ### Retrieve user data with `getUserData`
 `getUserData` returns a `Promise<SPUserData>`. You can call this function at any point in your app's lifecycle, but consent may or may not yet be ready. The safest place to call it is inside the callback `onSPFinished`.
 
-## Full Example
+```ts
+consentManager.current?.onFinished(() => {
+      consentManager.current?.getUserData().then(setUserData);
+    });
+```
+
+## React example
+
+In the example below, you can find a fully configured example in React:
+ 
 ```jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, SafeAreaView } from 'react-native';
@@ -114,9 +158,9 @@ export default function App() {
 )
 ```
 
-### Complete Example
+## Complete App examples
 
-For a complete app example, check the `/example` folder.
+Complete app examples for iOS and Android can be found in the [`/example`](/example/) folder of the SDK. 
 
 ## License
 
