@@ -25,15 +25,11 @@ RCT_EXTERN_METHOD(supportedEvents)
     return YES;
 }
 
-/// TODO: check if this really can be here or need fixing in the SDK
-/// https://reactnative.dev/docs/native-modules-ios
-/// https://github.com/OneSignal/react-native-onesignal/issues/749
 - (dispatch_queue_t)methodQueue
 {
     return dispatch_get_main_queue();
 }
 
-// Don't compile this code when we build for the old architecture.
 #ifdef RCT_NEW_ARCH_ENABLED
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
 (const facebook::react::ObjCTurboModule::InitParams &)params
