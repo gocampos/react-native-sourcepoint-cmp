@@ -70,6 +70,7 @@
     "@release-it/conventional-changelog": "^5.0.0",
     "@types/jest": "^29.5.5",
     "@types/react": "^18.2.44",
+    "@types/uuid": "^9.0.8",
     "commitlint": "^17.0.2",
     "del-cli": "^5.1.0",
     "detox": "^20.20.3",
@@ -84,7 +85,8 @@
     "react-native-builder-bob": "^0.23.2",
     "release-it": "^15.0.0",
     "turbo": "^1.13.3",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "uuid": "^9.0.1"
   },
   "resolutions": {
     "@types/react": "^18.2.44"
@@ -143,14 +145,17 @@
           "trailingComma": "es5",
           "useTabs": false
         }
-      ]
+      ],
+      "react-hooks/exhaustive-deps": "warn"
     }
   },
   "eslintIgnore": [
     "node_modules/",
     "lib/",
-    "example/android/app/build",
-    "example/ios/Pods"
+    "android/build/",
+    "example/android/app/build/",
+    "example/ios/Pods/",
+    "example/ios/build/"
   ],
   "prettier": {
     "quoteProps": "consistent",

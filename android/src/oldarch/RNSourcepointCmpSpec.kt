@@ -9,7 +9,7 @@ abstract class RNSourcepointCmpSpec internal constructor(context: ReactApplicati
   ReactContextBaseJavaModule(context) {
 
   abstract fun build(accountId: Int, propertyId: Int, propertyName: String, campaigns: ReadableMap)
-  abstract fun loadMessage()
+  abstract fun loadMessage(params: ReadableMap?)
   abstract fun clearLocalData()
   abstract fun getUserData(promise: Promise)
   abstract fun loadGDPRPrivacyManager(pmId: String)

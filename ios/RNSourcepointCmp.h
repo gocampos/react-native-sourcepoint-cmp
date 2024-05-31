@@ -11,7 +11,7 @@
 
 RCT_EXTERN_METHOD(build:(int)accountId propertyId:(int)propertyId propertyName:(NSString *)propertyName campaigns:(SPCampaigns*)campaigns)
 
-RCT_EXTERN_METHOD(loadMessage)
+RCT_EXTERN_METHOD(loadMessage: (SPLoadMessageParams *)params)
 RCT_EXTERN_METHOD(clearLocalData)
 RCT_EXTERN_METHOD(loadGDPRPrivacyManager:(NSString *)pmId)
 RCT_EXTERN_METHOD(loadUSNatPrivacyManager:(NSString *)pmId)

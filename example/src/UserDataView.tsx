@@ -4,9 +4,11 @@ import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { TestableText } from './TestableText';
 import type { SPUserData } from '@sourcepoint/react-native-cmp';
 
-export default ({ data }: UserDataViewProps) => (
+export default ({ data, authId }: UserDataViewProps) => (
   <View style={styles.container}>
-    <Text style={styles.header}>Local User Data</Text>
+    <Text style={styles.header}>
+      {authId ? `User Data (${authId})` : `User Data`}
+    </Text>
     <TestableText testID="gdpr.uuid">{data?.gdpr?.consents?.uuid}</TestableText>
     <TestableText testID="gdpr.consentStatus">
       {data?.gdpr?.consents?.statuses?.consentedAll
@@ -31,6 +33,7 @@ export default ({ data }: UserDataViewProps) => (
 
 type UserDataViewProps = {
   data: SPUserData;
+  authId?: string;
 };
 
 const styles = StyleSheet.create({

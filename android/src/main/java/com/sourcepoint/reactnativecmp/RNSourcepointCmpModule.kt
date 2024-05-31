@@ -1,7 +1,6 @@
 package com.sourcepoint.reactnativecmp
 
 import android.view.View
-import com.facebook.react.bridge.Arguments.createArray
 import com.facebook.react.bridge.Arguments.createMap
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactMethod
@@ -23,6 +22,10 @@ import com.sourcepoint.cmplibrary.util.clearAllData
 import com.sourcepoint.cmplibrary.util.userConsents
 import com.sourcepoint.reactnativecmp.consents.RNSPUserData
 import org.json.JSONObject
+
+data class SPLoadMessageParams(val authId: String?) {
+  constructor(fromReadableMap: ReadableMap?) : this(authId = fromReadableMap?.getString("authId"))
+}
 
 class RNSourcepointCmpModule internal constructor(context: ReactApplicationContext) :
   RNSourcepointCmpSpec(context) , SpClient {
@@ -68,8 +71,13 @@ class RNSourcepointCmpModule internal constructor(context: ReactApplicationConte
   }
 
   @ReactMethod
-  override fun loadMessage() {
-    runOnMainThread { spConsentLib?.loadMessage(View.generateViewId()) }
+  override fun loadMessage(params: ReadableMap?) {
+    val parsedParams = SPLoadMessageParams(fromReadableMap = params)
+
+    runOnMainThread { spConsentLib?.loadMessage(
+      authId = parsedParams.authId,
+      cmpViewId = View.generateViewId()
+    ) }
   }
 
   @ReactMethod

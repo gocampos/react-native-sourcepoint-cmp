@@ -1,5 +1,5 @@
 import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
-import type { Spec, SPCampaigns, SPUserData } from './types';
+import type { Spec, SPCampaigns, SPUserData, LoadMessageParams } from './types';
 
 const LINKING_ERROR =
   `The package '@sourcepoint/react-native-cmp' doesn't seem to be linked. Make sure: \n\n` +
@@ -45,8 +45,8 @@ export class SPConsentManager implements Spec {
     return RNSourcepointCmp.getUserData();
   }
 
-  loadMessage() {
-    RNSourcepointCmp.loadMessage();
+  loadMessage(params?: LoadMessageParams) {
+    RNSourcepointCmp.loadMessage(params);
   }
 
   clearLocalData() {

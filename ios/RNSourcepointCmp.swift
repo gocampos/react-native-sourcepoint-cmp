@@ -40,8 +40,9 @@ import React
         RNSourcepointCmp.shared?.consentManager = manager
     }
 
-    func loadMessage() {
-        consentManager?.loadMessage(forAuthId: nil, pubData: nil)
+    func loadMessage(_ params: SPLoadMessageParams) {
+        print("calling loadMessage with: ", params.authId as Any)
+        consentManager?.loadMessage(forAuthId: params.authId, pubData: nil)
     }
 
     // TODO: fix an issue with `SPConsentManager.clearAllData` returning in-memory data

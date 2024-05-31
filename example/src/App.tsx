@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { View, Text, SafeAreaView, Button, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Button,
+  StyleSheet,
+  TextInput,
+} from 'react-native';
 import { LaunchArguments } from 'react-native-launch-arguments';
 
 import {
@@ -38,6 +45,7 @@ const config = {
 export default function App() {
   const [userData, setUserData] = useState<SPUserData>({});
   const [sdkStatus, setSDKStatus] = useState<SDKStatus>(SDKStatus.NotStarted);
+  const [authId, setAuthId] = useState<string | undefined>(launchArgs.authId);
   const consentManager = useRef<SPConsentManager | null>();
 
   useEffect(() => {
@@ -75,7 +83,7 @@ export default function App() {
 
     consentManager.current?.getUserData().then(setUserData);
 
-    consentManager.current?.loadMessage();
+    consentManager.current?.loadMessage({ authId });
 
     setSDKStatus(SDKStatus.Networking);
 
@@ -85,9 +93,9 @@ export default function App() {
   }, []);
 
   const onLoadMessagePress = useCallback(() => {
-    consentManager.current?.loadMessage();
+    consentManager.current?.loadMessage({ authId });
     setSDKStatus(SDKStatus.Networking);
-  }, []);
+  }, [authId]);
 
   const onGDPRPMPress = useCallback(() => {
     setSDKStatus(SDKStatus.Networking);
@@ -111,8 +119,18 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <View>
         <Text style={styles.title}>Sourcepoint CMP</Text>
+        <TextInput
+          value={authId}
+          placeholder="(optional) authId"
+          onChangeText={setAuthId}
+          style={styles.authIdInput}
+          autoCapitalize="none"
+          autoCorrect={false}
+          autoComplete="off"
+          clearButtonMode="always"
+        />
         <Button
-          title="Load Messages"
+          title={authId ? `Load Messages (${authId})` : 'Load Messages'}
           onPress={onLoadMessagePress}
           disabled={disable}
         />
@@ -131,7 +149,7 @@ export default function App() {
           {sdkStatus}
         </Text>
       </View>
-      <UserDataView data={userData} />
+      <UserDataView data={userData} authId={authId} />
     </SafeAreaView>
   );
 }
@@ -145,5 +163,14 @@ const styles = StyleSheet.create({
   status: {
     textAlign: 'center',
     color: '#999',
+  },
+  authIdInput: {
+    marginVertical: 12,
+    marginHorizontal: 'auto',
+    width: '70%',
+    padding: 8,
+    fontSize: 18,
+    textAlign: 'center',
+    borderWidth: 1,
   },
 });

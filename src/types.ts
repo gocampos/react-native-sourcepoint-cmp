@@ -86,6 +86,10 @@ export type SPUserData = {
   usnat?: CampaignConsent<USNatConsent>;
 };
 
+export type LoadMessageParams = {
+  authId?: string;
+};
+
 export interface Spec extends TurboModule {
   build(
     accountId: number,
@@ -94,7 +98,7 @@ export interface Spec extends TurboModule {
     campaigns: SPCampaigns
   ): void;
   getUserData(): Promise<SPUserData>;
-  loadMessage(): void;
+  loadMessage(params?: LoadMessageParams): void;
   clearLocalData(): void;
   loadGDPRPrivacyManager(pmId: string): void;
   loadUSNatPrivacyManager(pmId: string): void;
