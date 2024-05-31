@@ -10,6 +10,16 @@ export const enum SPCampaignEnvironment {
   Stage = 'Stage',
 }
 
+export const enum SPActionType {
+  acceptAll = 'acceptAll',
+  rejectAll = 'rejectAll',
+  saveAndExit = 'saveAndExit',
+  showOptions = 'showOptions',
+  dismiss = 'dismiss',
+  pmCancel = 'pmCancel',
+  unknown = 'unknown',
+}
+
 export type SPCampaigns = {
   gdpr?: SPCampaign;
   usnat?: SPCampaign;
@@ -103,8 +113,7 @@ export interface Spec extends TurboModule {
   loadGDPRPrivacyManager(pmId: string): void;
   loadUSNatPrivacyManager(pmId: string): void;
 
-  // TODO: change action from string to enum
-  onAction(callback: (action: string) => void): void;
+  onAction(callback: (body: { actionType: SPActionType }) => void): void;
   onSPUIReady(callback: () => void): void;
   onSPUIFinished(callback: () => void): void;
   onFinished(callback: () => void): void;
