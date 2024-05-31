@@ -1,4 +1,7 @@
 import { web, element, by, expect, waitFor, device } from 'detox';
+import { v4 as uuid } from 'uuid';
+
+import type { LaunchArgs } from '../example/src/LaunchArgs';
 
 export const sleep = async (milliseconds: number) =>
   new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -84,18 +87,15 @@ const assertUUIDsDontChangeAfterReloadingMessages = async () => {
   await expect(app.usnatUUIDLabel).toHaveText(usnatUUIDBeforeReloading);
 };
 
-const launchApp = async (launchArgs = {}) =>
+const launchApp = async (launchArgs: LaunchArgs = {}) =>
   device.launchApp({
     newInstance: true,
     launchArgs: { clearData: true, ...launchArgs },
   });
 
-beforeEach(async () => {
-  await launchApp();
-});
-
 describe('SourcepointSDK', () => {
   it('Accepting All, works', async () => {
+    await launchApp();
     await app.acceptAll(); // GDPR
     await app.acceptAll(); // USNAT
     await app.forSDKToBeFinished();
@@ -105,11 +105,28 @@ describe('SourcepointSDK', () => {
   });
 
   it('Rejecting All, works', async () => {
+    await launchApp();
     await app.rejectAll(); // GDPR
     await app.rejectAll(); // USNAT
     await app.forSDKToBeFinished();
     await assertUUIDsDontChangeAfterReloadingMessages();
     await expect(app.gdprConsentStatusLabel).toHaveText('rejectedAll');
     await expect(app.usnatConsentStatusLabel).toHaveText('rejectedAll');
+  });
+
+  describe('authenticated consent', () => {
+    describe('when authId is new', () => {
+      it('calling loadMessages shows a message', async () => {
+        await launchApp({ authId: `rn-e2e-test-${uuid()}` });
+        await app.forSDKToBePresenting();
+      });
+    });
+
+    describe('when authId has consented before', () => {
+      it('calling loadMessages does not show a message', async () => {
+        await launchApp({ authId: 'rn-automated-test-accept-all' });
+        await app.forSDKToBeFinished();
+      });
+    });
   });
 });
