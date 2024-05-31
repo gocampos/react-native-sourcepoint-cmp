@@ -41,7 +41,6 @@ import React
     }
 
     func loadMessage(_ params: SPLoadMessageParams) {
-        print("calling loadMessage with: ", params.authId as Any)
         consentManager?.loadMessage(forAuthId: params.authId, pubData: nil)
     }
 
@@ -67,11 +66,10 @@ extension RNSourcepointCmp: SPDelegate {
         UIApplication.shared.delegate?.window??.rootViewController
     }
 
-    // TODO: standardize action names
     func onAction(_ action: SPAction, from controller: UIViewController) {
         RNSourcepointCmp.shared?.sendEvent(
             withName: "onAction",
-            body: ["actionType": action.type.description]
+            body: ["actionType": RNSourcepointActionType(from: action.type).rawValue]
         )
     }
 

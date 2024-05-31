@@ -74,7 +74,9 @@ export default function App() {
       consentManager.current?.getUserData().then(setUserData);
     });
 
-    consentManager.current?.onAction((actionType) => console.log(actionType));
+    consentManager.current?.onAction(({ actionType }) =>
+      console.warn(`action: ${actionType}`)
+    );
 
     consentManager.current?.onError((description) => {
       setSDKStatus(SDKStatus.Errored);

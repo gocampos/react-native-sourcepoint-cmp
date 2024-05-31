@@ -55,6 +55,10 @@ const app = {
     await this.forSDKToBeFinished();
   },
 
+  assertActionWarnWith: async function (actionType: string) {
+    await expect(element(by.text(`action: ${actionType}`))).toExist();
+  },
+
   reloadMessages: async function ({ clearData }: { clearData: boolean }) {
     if (clearData) await this.clearData();
     await this.loadMessagesButton.tap();
@@ -97,7 +101,9 @@ describe('SourcepointSDK', () => {
   it('Accepting All, works', async () => {
     await launchApp();
     await app.acceptAll(); // GDPR
+    await app.assertActionWarnWith('acceptAll');
     await app.acceptAll(); // USNAT
+    await app.assertActionWarnWith('saveAndExit'); // USNAT uses saveAndExit for accepting/rejecting all
     await app.forSDKToBeFinished();
     await assertUUIDsDontChangeAfterReloadingMessages();
     await expect(app.gdprConsentStatusLabel).toHaveText('consentedAll');
@@ -107,7 +113,9 @@ describe('SourcepointSDK', () => {
   it('Rejecting All, works', async () => {
     await launchApp();
     await app.rejectAll(); // GDPR
+    await app.assertActionWarnWith('rejectAll');
     await app.rejectAll(); // USNAT
+    await app.assertActionWarnWith('saveAndExit'); // USNAT uses saveAndExit for accepting/rejecting all
     await app.forSDKToBeFinished();
     await assertUUIDsDontChangeAfterReloadingMessages();
     await expect(app.gdprConsentStatusLabel).toHaveText('rejectedAll');
