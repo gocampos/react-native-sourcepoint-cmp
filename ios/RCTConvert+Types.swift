@@ -9,6 +9,14 @@ import Foundation
 import React
 import ConsentViewController
 
+@objcMembers class SPLoadMessageParams: NSObject {
+    let authId: String?
+
+    init(authId: String?) {
+        self.authId = authId
+    }
+}
+
 extension RCTConvert {
     @objc static func SPCampaignEnv(_ envString: String?) -> ConsentViewController.SPCampaignEnv {
         switch envString {
@@ -33,5 +41,9 @@ extension RCTConvert {
             usnat: SPCampaign(json["usnat"] as? NSDictionary),
             environment: SPCampaignEnv(json["environment"] as? String)
         )
+    }
+
+    @objc static func SPLoadMessageParams(_ json: NSDictionary) -> SPLoadMessageParams {
+        sourcepoint_react_native_cmp.SPLoadMessageParams(authId: json["authId"] as? String)
     }
 }

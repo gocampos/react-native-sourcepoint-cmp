@@ -1169,7 +1169,7 @@ PODS:
     - React-perflogger (= 0.74.1)
     - React-utils (= 0.74.1)
   - SocketRocket (0.7.0)
-  - sourcepoint-react-native-cmp (0.0.2):
+  - sourcepoint-react-native-cmp (0.2.0):
     - ConsentViewController (= 7.6.7)
     - DoubleConversion
     - glog
@@ -1430,7 +1430,7 @@ SPEC CHECKSUMS:
   React-utils: 3285151c9d1e3a28a9586571fc81d521678c196d
   ReactCommon: f42444e384d82ab89184aed5d6f3142748b54768
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
-  sourcepoint-react-native-cmp: 4ab4090e7167aec98fba9ee3ad2f88612b17c469
+  sourcepoint-react-native-cmp: ec9bb56628c019641bddac75ca37b5b071a5bef2
   Yoga: b9a182ab00cf25926e7f79657d08c5d23c2d03b0
 
 PODFILE CHECKSUM: 2a400e13ba47ff4014982e7ee6044d16cb97b3a2
