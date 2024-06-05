@@ -120,4 +120,7 @@ export interface Spec extends TurboModule {
   onError(callback: (description: string) => void): void;
 
   dispose(): void;
+
+  addListener(eventName: string): void;
+  removeListeners(count: number): void;
 }
