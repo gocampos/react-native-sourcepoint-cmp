@@ -97,4 +97,8 @@ export class SPConsentManager implements Spec {
       this.emitter.removeAllListeners
     );
   }
+
+  addListener(_eventName: string): void {}
+  removeListeners(_count: number): void {}
+  getConstants?(): {};
 }

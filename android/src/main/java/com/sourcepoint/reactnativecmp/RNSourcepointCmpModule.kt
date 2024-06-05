@@ -106,6 +106,12 @@ class RNSourcepointCmpModule internal constructor(context: ReactApplicationConte
     .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
     .emit(event.name, params)
 
+  @ReactMethod
+  fun addListener(eventName: String) {}
+
+  @ReactMethod
+  fun removeListeners(count: Int) {}
+
   companion object {
     const val NAME = "RNSourcepointCmp"
   }

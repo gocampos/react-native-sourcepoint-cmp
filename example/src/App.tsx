@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   title: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 22,
   },
   status: {
     textAlign: 'center',
@@ -169,10 +169,11 @@ const styles = StyleSheet.create({
   authIdInput: {
     marginVertical: 12,
     marginHorizontal: 'auto',
-    width: '70%',
+    width: '90%',
     padding: 8,
     fontSize: 18,
     textAlign: 'center',
     borderWidth: 1,
+    borderColor: '#999',
   },
 });

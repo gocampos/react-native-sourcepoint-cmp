@@ -38,12 +38,13 @@ type UserDataViewProps = {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
+    padding: 8,
   },
   header: {
     fontSize: 18,
   },
   userDataText: {
     fontSize: 10,
+    paddingBottom: 300,
   },
 });
