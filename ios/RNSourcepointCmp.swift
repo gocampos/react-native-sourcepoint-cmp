@@ -69,7 +69,10 @@ extension RNSourcepointCmp: SPDelegate {
     func onAction(_ action: SPAction, from controller: UIViewController) {
         RNSourcepointCmp.shared?.sendEvent(
             withName: "onAction",
-            body: ["actionType": RNSourcepointActionType(from: action.type).rawValue]
+            body: [
+              "actionType": RNSourcepointActionType(from: action.type).rawValue,
+              "customActionId": action.customActionId ?? "",
+            ]
         )
     }
 
