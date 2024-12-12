@@ -16,7 +16,7 @@ data class SPCampaign(
   val rawTargetingParam: ReadableMap?,
   val supportLegacyUSPString: Boolean
 ) {
-  val targetingParams = rawTargetingParam?.toHashMap()?.map { TargetingParam(it.key, it.toString()) } ?: emptyList()
+  val targetingParams = rawTargetingParam?.toHashMap()?.map { TargetingParam(it.key, it.value.toString()) } ?: emptyList()
 }
 
 data class SPCampaigns(
