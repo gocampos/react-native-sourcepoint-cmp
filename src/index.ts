@@ -67,7 +67,12 @@ export class SPConsentManager implements Spec {
     RNSourcepointCmp.loadUSNatPrivacyManager(pmId);
   }
 
-  onAction(callback: (body: { actionType: SPActionType }) => void): void {
+  onAction(
+    callback: (body: {
+      actionType: SPActionType;
+      customActionId: string;
+    }) => void
+  ): void {
     this.emitter.removeAllListeners('onAction');
     this.emitter.addListener('onAction', callback);
   }
