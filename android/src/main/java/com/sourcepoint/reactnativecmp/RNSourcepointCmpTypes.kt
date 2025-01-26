@@ -52,4 +52,3 @@ fun ReadableMap.SPCampaigns() = SPCampaigns(
   usnat = this.getMap("usnat")?.SPCampaign(),
   environment = campaignsEnvFrom(rawValue = this.getString("environment"))
 )
-

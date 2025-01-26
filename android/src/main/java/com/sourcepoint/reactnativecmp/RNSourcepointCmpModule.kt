@@ -119,7 +119,6 @@ class RNSourcepointCmpModule internal constructor(context: ReactApplicationConte
   override fun onAction(view: View, consentAction: ConsentAction): ConsentAction {
     sendEvent(SDKEvent.onAction, createMap().apply {
       putString("actionType", RNSourcepointActionType.from(consentAction.actionType).name)
-      putString("customActionId", consentAction.customActionId ?: "")
     })
     return consentAction
   }
